@@ -3,15 +3,15 @@ import './App.css';
 import SpotifyWebApi from 'spotify-web-api-js';
 import Timeline from 'react-visjs-timeline';
 const spotifyApi = new SpotifyWebApi();
-const albums = [];
 
 const tlOptions = {
   width: '100%',
-  height: '260px',
-  stack: false,
+  height: '600px',
+  stack: true,
+  autoResize: false,
   showMajorLabels: true,
-  showCurrentTime: true,
-  type: 'background',
+  zoomable: false,
+  zoomMin: 10000000000,
   format: {
     minorLabels: {
       minute: 'h:mma',
@@ -31,8 +31,8 @@ class App extends Component {
     }
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: ''},
-      profile: { name: '' }
+      profile: { name: '' },
+      albums: [{start: "2017-12-18T20:44:02Z", content: "" }]
     }
   }
 
@@ -46,18 +46,6 @@ class App extends Component {
        e = r.exec(q);
     }
     return hashParams;
-  }
-
-  getNowPlaying() {
-    spotifyApi.getMyCurrentPlaybackState()
-      .then((response) => {
-        this.setState({
-          nowPlaying: {
-            name: response.item.name,
-            albumArt: response.item.album.images[0].url
-          }
-        });
-      })
   }
 
   getUser() {
@@ -74,16 +62,21 @@ class App extends Component {
   getSavedAlbums() {
     spotifyApi.getMySavedAlbums({limit: 50})
       .then((response) => {
+
+        let userAlbums = [];
+
         for (let i = 0; i < response.items.length; i++) {
-          console.log(response.items[i]);
+          const albumArt = response.items[i].album.images[0].url;
           const album = {
             start: response.items[i].added_at,
-            end: response.items[i].added_at,
-            content: response.items[i].album.name
+            content: "<img style='width: 100px; height: 100px;' src='"+albumArt+"'/>"
           }
-          albums.push(album);
+          userAlbums.push(album);
         }
-        console.log(albums);
+
+        this.setState({
+          albums: userAlbums
+        });
 
       })
   }
@@ -100,7 +93,7 @@ class App extends Component {
 
         <Timeline
           options={tlOptions}
-          items={albums}
+          items={this.state.albums}
         />
 
       </div>
