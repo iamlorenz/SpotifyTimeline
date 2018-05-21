@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 import Timeline from 'react-visjs-timeline';
 import './App.css';
+import { Album } from './Album';
 import Options from './options';
-// import { Sidebar } from './sidebar';
 const spotifyApi = new SpotifyWebApi();
 
 class App extends Component {
@@ -13,19 +13,14 @@ class App extends Component {
     const token = params.access_token;
     if (token) {
       spotifyApi.setAccessToken(token);
-      this.getUser();
     }
     this.state = {
       loggedIn: token ? true : false,
-      profile: { name: '' },
       albums: [{start: "2017-12-18T20:44:02Z", content: "" }],
-      selectedAlbum: {},
+      album: {},
       showSidebar: false
     }
-  }
 
-  componentDidMount() {
-    this.getSavedAlbums();
   }
 
   getHashParams() {
@@ -38,17 +33,6 @@ class App extends Component {
        e = r.exec(q);
     }
     return hashParams;
-  }
-
-  getUser() {
-    spotifyApi.getMe()
-      .then((response) => {
-        this.setState({
-          profile: {
-            name: response.display_name
-          }
-        });
-      })
   }
 
   getSavedAlbums() {
@@ -74,23 +58,43 @@ class App extends Component {
       })
   }
 
+  displayAlbum(props) {
+    if (props.item !== null){
+      spotifyApi.getAlbum(props.item)
+        .then((response) => {
+
+          this.setState({
+            album: {
+              name: response.name,
+              artist: response.artists[0],
+              tracks: response.tracks.items
+            },
+            showSidebar: true
+          });
+
+        })
+    } else {
+      //hide sidebar if not tapping on an album
+      this.setState({ showSidebar: false });
+    }
+  }
   render() {
     return (
       <div className="App">
 
         { this.state.loggedIn &&
-          <button onClick={() => this.getSavedAlbums()}>Albums</button>
+          <button className="load" onClick={() => this.getSavedAlbums()}>Albums</button>
         }
 
         <Timeline
           options={Options}
           items={this.state.albums}
-          clickHandler={loadTracksforAlbum}
+          clickHandler={(props) => this.displayAlbum(props)}
         />
 
-        <div className="sidebar">
-
-        </div>
+        { this.state.showSidebar &&
+          <Album album={this.state.album}/>
+        }
 
       </div>
     );
@@ -98,24 +102,3 @@ class App extends Component {
 }
 
 export default App;
-
-// LOAD TRACK LIST
-function loadTracksforAlbum(props) {
-  if (props.item !== null){
-    spotifyApi.getAlbum(props.item)
-      .then((response) => {
-
-        console.log(response);
-
-        // this.setState({
-        //   album: {
-        //     name: response.name,
-        //     artist: response.artists[0],
-        //     tracks: response.tracks.items
-        //   }
-        // });
-
-
-      })
-  }
-}

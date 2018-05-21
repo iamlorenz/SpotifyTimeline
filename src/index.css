@@ -1,5 +1,17 @@
-body {
+body, html {
   margin: 0;
   padding: 0;
   font-family: 'IBM Plex Mono', monospace;
+  height: 100%;
+}
+
+h1{
+  font-size: 25px;
+}
+h2{
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 20px;
+  margin-top: -8px;
+  color: #0057ff;
 }

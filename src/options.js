@@ -1,6 +1,6 @@
 const options = {
   width: '100%',
-  height: '600px',
+  height: '100%',
   stack: true,
   autoResize: false,
   showMajorLabels: true,

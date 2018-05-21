@@ -1,6 +1,17 @@
-/* App */
+/*============*/
+/*  TIMELINE  */
+/*============*/
 
-/* Timeline */
+/*div that holds timeline*/
+.App > div{
+  height: 100vh;
+}
+
+.load{
+  position: absolute;
+  top: 0;
+}
+
 .vis-timeline {
   border: none;
 }
@@ -27,7 +38,7 @@
 
 }
 
-.vis-item .vis-item-content {
+.vis-item.vis-item-content {
   padding: 0;
 }
 
@@ -42,13 +53,65 @@ div.vis-tooltip {
   background-color: #0094ff;
 }
 
-/* side Bar */
+/*============*/
+/*  SIDE BAR  */
+/*============*/
+@keyframes slidein {
+  from { right: -480px; }
+   to   { right: 0; }
+}
 .sidebar {
-  width: 300px;
+  width: 440px;
   height: 100%;
-  background-color: #191a1f;
+  padding: 0 20px;
+  background-color: black;
+  color: white;
+  opacity: 0.95;
   position: absolute;
   right: 0;
   top: 0;
   z-index: 999;
+  animation: slidein .2s;
+  overflow: scroll;
+}
+.header{
+  border-bottom: 1px solid #fff;
+  margin-top: 30px;
+  padding-bottom: 20px;
+}
+.sidebar li{
+  padding: 10px 0;
+}
+.sidebar ul{
+  padding: 20px 0px;
+  list-style: none;
+}
+.add{
+  float: right;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 10px;
+  color: #fff;
+  margin-top: -6px;
+}
+.add:hover{
+  background-color: #0057ff;
+  cursor: pointer;
+}
+.add .tooltip {
+  visibility: hidden;
+  width: 200px;
+  background-color: #0057ff;
+  text-align: center;
+  z-index: 9999;
+  font-family: 'IBM Plex Mono', monospace;
+  padding: 9px 10px;
+  position: absolute;
+  right: 40px;
+  font-size: 12px;
+  margin-top: -10px;
+}
+.add:hover .tooltip {
+  visibility: visible;
 }
