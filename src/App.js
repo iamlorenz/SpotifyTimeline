@@ -1,24 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
 import SpotifyWebApi from 'spotify-web-api-js';
 import Timeline from 'react-visjs-timeline';
+import './App.css';
+import Options from './options';
 const spotifyApi = new SpotifyWebApi();
-
-const tlOptions = {
-  width: '100%',
-  height: '600px',
-  stack: true,
-  autoResize: false,
-  showMajorLabels: true,
-  zoomable: false,
-  zoomMin: 10000000000,
-  format: {
-    minorLabels: {
-      minute: 'h:mma',
-      hour: 'ha'
-    }
-  }
-}
 
 class App extends Component {
   constructor(){
@@ -34,6 +19,10 @@ class App extends Component {
       profile: { name: '' },
       albums: [{start: "2017-12-18T20:44:02Z", content: "" }]
     }
+  }
+
+  componentDidMount() {
+    this.getSavedAlbums();
   }
 
   getHashParams() {
@@ -69,7 +58,8 @@ class App extends Component {
           const albumArt = response.items[i].album.images[0].url;
           const album = {
             start: response.items[i].added_at,
-            content: "<img style='width: 100px; height: 100px;' src='"+albumArt+"'/>"
+            content: "<img style='width: 100px; height: 100px;' src='"+albumArt+"'/>",
+            title: "<b>"+response.items[i].album.artists[0].name + "</b><br>" + response.items[i].album.name
           }
           userAlbums.push(album);
         }
@@ -81,20 +71,21 @@ class App extends Component {
       })
   }
 
-
   render() {
     return (
       <div className="App">
+
         { this.state.loggedIn &&
-          <button onClick={() => this.getSavedAlbums()}>
-            Get My Albums
-          </button>
+          <button onClick={() => this.getSavedAlbums()}>Albums</button>
         }
 
         <Timeline
-          options={tlOptions}
+          options={Options}
           items={this.state.albums}
         />
+
+        <div className="sidebar">
+        </div>
 
       </div>
     );

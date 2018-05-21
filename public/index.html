@@ -10,6 +10,7 @@
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono" rel="stylesheet">
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -25,7 +26,42 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
+
     <div id="root"></div>
+
+    <!-- <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        const token = 'BQCpctvL6HmESIV7HxFsMik49YGESRG2qYnb2r_R2B-sQ6rD2cx1PDItSEM815gTLWqEpmSD0aBcLYvYX3pgAelgBeHR7T9b5wkYYuPRGQJSyjVEd8wunfG1BPs9YhE2GWk0JCuDCCkNt65M37j9re7xzdrTetlvKa8a07Gnf40xCNNOUNqM-Q';
+        const player = new Spotify.Player({
+          name: 'Web Playback SDK Quick Start Player',
+          getOAuthToken: cb => { cb(token); }
+        });
+
+        // Error handling
+        player.addListener('initialization_error', ({ message }) => { console.error(message); });
+        player.addListener('authentication_error', ({ message }) => { console.error(message); });
+        player.addListener('account_error', ({ message }) => { console.error(message); });
+        player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+        // Playback status updates
+        player.addListener('player_state_changed', state => { console.log(state); });
+
+        // Ready
+        player.addListener('ready', ({ device_id }) => {
+          console.log('Ready with Device ID', device_id);
+        });
+
+        // Not Ready
+        player.addListener('not_ready', ({ device_id }) => {
+          console.log('Device ID has gone offline', device_id);
+        });
+
+        // Connect to the player!
+        player.connect();
+      };
+
+    </script> -->
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -35,6 +71,8 @@
 
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
+
+
     -->
   </body>
 </html>
