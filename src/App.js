@@ -13,9 +13,11 @@ class App extends Component {
     const token = params.access_token;
     if (token) {
       spotifyApi.setAccessToken(token);
+      this.getUser();
     }
     this.state = {
       loggedIn: token ? true : false,
+      user: {},
       albums: [{start: "2017-12-18T20:44:02Z", content: "" }],
       album: {},
       showSidebar: false
@@ -33,6 +35,18 @@ class App extends Component {
        e = r.exec(q);
     }
     return hashParams;
+  }
+
+  getUser() {
+    spotifyApi.getMe()
+      .then((response) => {
+        this.setState({
+          user: {
+            name: response.display_name,
+            id: response.id
+          }
+        });
+      })
   }
 
   getSavedAlbums() {
@@ -57,6 +71,10 @@ class App extends Component {
 
       })
   }
+
+  // addToPlaylist() {
+  //   spotifyApi.addTracksToPlaylist(this.state.user.id, '');
+  // }
 
   displayAlbum(props) {
     if (props.item !== null){

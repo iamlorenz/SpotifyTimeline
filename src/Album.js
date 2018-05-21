@@ -22,7 +22,7 @@ function TrackList(props) {
     <li key={index}>
       {track.name}
       <button className="add">&#65291;
-        <span className="tooltip">Add to 'NOSTALGIA' playlist</span>
+        <span className="tooltip">Add to <b>'NOSTALGIA'</b> playlist</span>
       </button>
     </li>
   );
