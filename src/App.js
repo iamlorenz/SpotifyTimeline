@@ -20,6 +20,7 @@ class App extends Component {
       user: {},
       albums: [{start: "2017-12-18T20:44:02Z", content: "" }],
       album: {},
+      playlist: null,
       showSidebar: false
     }
 
@@ -72,10 +73,6 @@ class App extends Component {
       })
   }
 
-  // addToPlaylist() {
-  //   spotifyApi.addTracksToPlaylist(this.state.user.id, '');
-  // }
-
   displayAlbum(props) {
     if (props.item !== null){
       spotifyApi.getAlbum(props.item)
@@ -96,12 +93,13 @@ class App extends Component {
       this.setState({ showSidebar: false });
     }
   }
+
   render() {
     return (
       <div className="App">
 
         { this.state.loggedIn &&
-          <button className="load" onClick={() => this.getSavedAlbums()}>Albums</button>
+          <button className="load" onClick={() => this.getSavedAlbums()}>Refresh</button>
         }
 
         <Timeline
@@ -111,7 +109,10 @@ class App extends Component {
         />
 
         { this.state.showSidebar &&
-          <Album album={this.state.album}/>
+          <Album
+            album={this.state.album}
+            user={this.state.user}
+          />
         }
 
       </div>
