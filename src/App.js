@@ -18,7 +18,8 @@ class App extends Component {
     this.state = {
       loggedIn: token ? true : false,
       user: {},
-      albums: [{start: "2017-12-18T20:44:02Z", content: "" }],
+      isLoading: true,
+      // albums: [{start: "2017-12-18T20:44:02Z", content: "" }],
       album: {},
       playlist: null,
       showSidebar: false
@@ -50,7 +51,7 @@ class App extends Component {
       })
   }
 
-  getSavedAlbums() {
+  componentDidMount() {
     spotifyApi.getMySavedAlbums({limit: 50})
       .then((response) => {
 
@@ -67,10 +68,14 @@ class App extends Component {
           userAlbums.push(album);
         }
         this.setState({
+          isLoading: false,
           albums: userAlbums
         });
 
       })
+      .catch((error) =>{
+        console.log(error);
+      });
   }
 
   displayAlbum(props) {
@@ -95,18 +100,22 @@ class App extends Component {
   }
 
   render() {
+    if (this.state.isLoading){
+      return(
+        <div>loading albums..</div>
+      )
+    }
+
     return (
       <div className="App">
 
         { this.state.loggedIn &&
-          <button className="load" onClick={() => this.getSavedAlbums()}>Refresh</button>
+          <Timeline
+            options={Options}
+            items={this.state.albums}
+            clickHandler={(props) => this.displayAlbum(props)}
+          />
         }
-
-        <Timeline
-          options={Options}
-          items={this.state.albums}
-          clickHandler={(props) => this.displayAlbum(props)}
-        />
 
         { this.state.showSidebar &&
           <Album
